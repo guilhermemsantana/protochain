@@ -37,10 +37,10 @@ export default class Block {
      */
     isValid(previousIndex: number, previousHash: string): Validation {
         if (this.index - 1 !== previousIndex) return new Validation(false, "Invalid index");
-        if (this.timestamp < 1) return new Validation(false, "Invalid timestamp");;
-        if (this.previousHash !== previousHash) return new Validation(false, "Invalid previous hash");;
-        if (this.hash !== this.getHash()) return new Validation(false, "Invalid hash");;
-        if (!this.data) return new Validation(false, "Invalid data");;
+        if (this.timestamp < 1) return new Validation(false, "Invalid timestamp");
+        if (this.previousHash !== previousHash) return new Validation(false, "Invalid previous hash");
+        if (this.hash !== this.getHash()) return new Validation(false, "Invalid hash");
+        if (!this.data) return new Validation(false, "Invalid data");
 
         return new Validation();
     }

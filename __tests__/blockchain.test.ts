@@ -1,5 +1,7 @@
-import Blockchain from "../src/lib/blockchain";
 import Block from "../src/lib/block";
+import Blockchain from "../src/lib/blockchain";
+
+jest.mock("../src/lib/block");
 
 describe("Blockchain tests", () => {
 
@@ -83,7 +85,7 @@ describe("Blockchain tests", () => {
                 } as Block
             )
         );
-        blockchain.blocks[1].data = "another data";
+        blockchain.blocks[1].index = -1;
 
         expect(blockchain.isValid().success).toEqual(false);
     })

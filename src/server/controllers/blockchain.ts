@@ -1,17 +1,10 @@
 import express from "express";
-import morgan from "morgan";
-import Blockchain from "../lib/blockchain";
-import Block from "../lib/block";
+import Block from "../../lib/block";
+import { blockchain } from "..";
 
-const PORT: number = 3000;
-const app = express();
+const router = express.Router();
 
-app.use(morgan("tiny"));
-app.use(express.json());
-
-const blockchain = new Blockchain();
-
-app.get("/status", (req, res, next) => {
+router.get("/status", (req, res, next) => {
     res.json(
         {
             numberOfBlocks: blockchain.blocks.length,
@@ -21,7 +14,7 @@ app.get("/status", (req, res, next) => {
     )
 });
 
-app.get("/blocks/:indexOrHash", (req, res, next) => {
+router.get("/blocks/:indexOrHash", (req, res, next) => {
     let block;
     
     if (/^[0-9]+$/.test(req.params.indexOrHash)) {
@@ -39,8 +32,8 @@ app.get("/blocks/:indexOrHash", (req, res, next) => {
     return res.json(block);
 });
 
-app.post("/blocks", (req, res, next) => {
-    if(req.body.hash === undefined) return res.sendStatus(422);
+router.post("/blocks", (req, res, next) => {
+    if(req.body.hash === undefined) return res.status(422).send("Invalid hash");
 
     const block = new Block(req.body as Block);
     const validation = blockchain.addBlock(block);
@@ -51,8 +44,6 @@ app.post("/blocks", (req, res, next) => {
     else {
         res.status(400).json(validation);
     }
-})
+});
 
-app.listen(PORT, () => {
-    console.log(`Blockchain server is running at port ${PORT}`);
-})
+module.exports = (app: any) => app.use('/blockchain', router)

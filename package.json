@@ -2,13 +2,12 @@
   "name": "protochain",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/blockchain.ts",
+  "main": "./src/server/index.ts",
   "scripts": {
     "compile": "npx tsc",
-    "dev": "nodemon ./src/blockchain.ts",
-    "start": "node ./dist/blockchain.js",
+    "start": "node ./dist/server/index.js",
     "test": "jest",
-    "blockchain": "ts-node ./src/server/blockchainServer.ts"
+    "dev": "nodemon ./src/server/index.ts"
   },
   "keywords": [],
   "author": "",
