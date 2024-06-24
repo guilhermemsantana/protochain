@@ -1,4 +1,5 @@
-import Block from './block';
+import Block from "./block";
+import Validation from "./validation";
 
 /**
  * Blockchain class
@@ -27,29 +28,33 @@ export default class Blockchain {
      * Adds a new block to the blockchain
      * @returns Returns true when successfully adding a block to the blockchain
      */
-    addBlock(block: Block): boolean {
+    addBlock(block: Block): Validation {
         const lastBlock = this.getLastBlock();
-        if (!block.isValid(lastBlock.index, lastBlock.hash)) return false;
+        const validation = block.isValid(lastBlock.index, lastBlock.hash);
+        
+        if (!validation.success)
+            return new Validation(false, `Invalid block: ${validation.message}`);
 
         this.blocks.push(block);
         this.nextIndex++;
 
-        return true;
+        return new Validation();
     }
 
     /**
      * Validates the blockchain
      * @returns Returns true if the blockchain is valid
      */
-    isValid(): boolean {
+    isValid(): Validation {
         for(let i = this.blocks.length - 1; i > 0; i--) {
             const currentBlock = this.blocks[i];
             const previousBlock = this.blocks[i - 1];
-            const valid = currentBlock.isValid(previousBlock.index, previousBlock.hash);
+            const validation = currentBlock.isValid(previousBlock.index, previousBlock.hash);
 
-            if (!valid) return false;
+            if (!validation.success)
+                return new Validation(false, `Invalid block #${currentBlock.index}: ${validation.message}`);
         }
 
-        return true;
+        return new Validation();
     }
 }
