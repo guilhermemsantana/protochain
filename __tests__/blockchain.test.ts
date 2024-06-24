@@ -10,22 +10,45 @@ describe("Blockchain tests", () => {
 
     test("Should add block", () => {
         const blockchain: Blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "data"));
+        const result = blockchain.addBlock(
+            new Block(
+                {
+                    index: 1,
+                    previousHash: blockchain.blocks[0].hash,
+                    data: "data"
+                } as Block
+            )
+        );
+
         expect(result.success).toEqual(true);
     })
 
     test("Should NOT add block", () => {
         const blockchain: Blockchain = new Blockchain();
-        const block = new Block(-1, blockchain.blocks[0].hash, "data");
+        const block = new Block(
+            {
+                index: -1,
+                previousHash: blockchain.blocks[0].hash,
+                data: "data"
+            } as Block
+        );
         const result = blockchain.addBlock(block);
+
         expect(result.success).toEqual(false);
     })
 
     test("Should get block", () => {
         const blockchain: Blockchain = new Blockchain();
-        const block = new Block(1, blockchain.blocks[0].hash, "data");
+        const block = new Block(
+            {
+                index: 1,
+                previousHash: blockchain.blocks[0].hash,
+                data: "data"
+            } as Block
+        );
         blockchain.addBlock(block);
         const result = blockchain.getBlock(block.hash);
+
         expect(result).toBeTruthy();
     })
 
@@ -36,14 +59,32 @@ describe("Blockchain tests", () => {
 
     test("Should be valid {two blocks}", () => {
         const blockchain: Blockchain = new Blockchain();
-        blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "data"));
+        blockchain.addBlock(
+            new Block(
+                {
+                    index: 1,
+                    previousHash: blockchain.blocks[0].hash,
+                    data: "data"
+                } as Block
+            )
+        );
+
         expect(blockchain.isValid().success).toEqual(true);
     })
 
     test("Should NOT be valid", () => {
         const blockchain: Blockchain = new Blockchain();
-        blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "data"));
+        blockchain.addBlock(
+            new Block(
+                {
+                    index: 1,
+                    previousHash: blockchain.blocks[0].hash,
+                    data: "data"
+                } as Block
+            )
+        );
         blockchain.blocks[1].data = "another data";
+
         expect(blockchain.isValid().success).toEqual(false);
     })
 
