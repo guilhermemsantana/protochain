@@ -22,7 +22,7 @@ export default class Blockchain {
             )
         ];
         this.nextIndex++;
-    }
+    };
 
     /**
      * Gets the last block of the blockchain
@@ -30,7 +30,7 @@ export default class Blockchain {
      */
     getLastBlock(): Block {
         return this.blocks[this.blocks.length - 1];
-    }
+    };
 
     /**
      * Adds a new block to the blockchain
@@ -40,18 +40,19 @@ export default class Blockchain {
         const lastBlock = this.getLastBlock();
         const validation = block.isValid(lastBlock.index, lastBlock.hash);
         
-        if (!validation.success)
+        if (!validation.success) {
             return new Validation(false, `Invalid block: ${validation.message}`);
+        }
 
         this.blocks.push(block);
         this.nextIndex++;
 
         return new Validation();
-    }
+    };
 
     getBlock(hash: string): Block | undefined {
         return this.blocks.find(block => block.hash === hash);
-    }
+    };
 
     /**
      * Validates the blockchain
@@ -63,10 +64,11 @@ export default class Blockchain {
             const previousBlock = this.blocks[i - 1];
             const validation = currentBlock.isValid(previousBlock.index, previousBlock.hash);
 
-            if (!validation.success)
+            if (!validation.success) {
                 return new Validation(false, `Invalid block #${currentBlock.index}: ${validation.message}`);
-        }
+            }
+        };
 
         return new Validation();
-    }
+    };
 }

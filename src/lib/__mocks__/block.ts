@@ -20,7 +20,7 @@ export default class Block {
         this.previousHash = block?.previousHash || "";
         this.data = block?.data || "";
         this.hash = block?.hash || this.getHash();
-    }
+    };
 
     /**
      * Generates block hash
@@ -28,7 +28,7 @@ export default class Block {
      */
     getHash(): string {
         return this.hash || "mock";
-    }
+    };
 
     /**
      * Validates the mocked block
@@ -36,9 +36,9 @@ export default class Block {
      */
     isValid(previousIndex: number, previousHash: string): Validation {
         if (!previousHash || previousIndex < 0 || this.index < 0) {
-            return new Validation(false, "Invalid mock block.")
+            return new Validation(false, "Invalid mock block.");
         }
 
         return new Validation();
-    }
+    };
 }

@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "baa3fb54-bf9f-4040-81e5-5ab3c5c8d0bb",
+		"name": "protochain",
+		"description": "A collection with the HTTP requests to call the protochain endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36551741"
+	},
+	"item": [
+		{
+			"name": "Blockchain Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful GET blockchain status\", function () {\r",
+							"    let response = pm.response;\r",
+							"    pm.expect(response.code).to.equal(200);\r",
+							"    pm.expect(response.text()).to.not.be.empty;\r",
+							"\r",
+							"    let responseBody = response.json();\r",
+							"    pm.expect(responseBody).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"numberOfBlocks\");\r",
+							"    pm.expect(`${responseBody.numberOfBlocks}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"isValid\");\r",
+							"    pm.expect(`${responseBody.isValid}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody.isValid).to.have.property(\"success\");\r",
+							"    pm.expect(responseBody.isValid.success).to.equal(true);\r",
+							"    pm.expect(responseBody.isValid).to.not.have.property(\"message\");\r",
+							"    pm.expect(responseBody).to.have.property(\"lastBlock\");\r",
+							"    pm.expect(responseBody.lastBlock).to.not.be.empty;\r",
+							"\r",
+							"    let lastBlock = responseBody.lastBlock;\r",
+							"    pm.expect(lastBlock).to.have.property(\"index\");\r",
+							"    pm.expect(`${lastBlock.index}`).to.not.be.empty;\r",
+							"    pm.expect(lastBlock).to.have.property(\"timestamp\");\r",
+							"    pm.expect(`${lastBlock.timestamp}`).to.not.be.empty;\r",
+							"    pm.expect(lastBlock).to.have.property(\"previousHash\");\r",
+							"    if (lastBlock.index !== 0)\r",
+							"        pm.expect(lastBlock.previousHash).to.not.be.empty;\r",
+							"    pm.expect(lastBlock).to.have.property(\"data\");\r",
+							"    pm.expect(lastBlock.data).to.not.be.empty;\r",
+							"    pm.expect(lastBlock).to.have.property(\"hash\");\r",
+							"    pm.expect(lastBlock.hash).to.not.be.empty;\r",
+							"    pm.expect(responseBody.numberOfBlocks).to.equal(lastBlock.index + 1);\r",
+							"\r",
+							"    pm.environment.set(\"lastIndex\", lastBlock.index);\r",
+							"    pm.environment.set(\"nextIndex\", lastBlock.index + 1);\r",
+							"    pm.environment.set(\"lastHash\", lastBlock.hash);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/blockchain/status",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"blockchain",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find block by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful GET find block by ID\", function () {\r",
+							"    let response = pm.response;\r",
+							"    pm.expect(response.code).to.equal(200);\r",
+							"    pm.expect(response.text()).to.not.be.empty;\r",
+							"\r",
+							"    let responseBody = response.json();\r",
+							"    pm.expect(responseBody).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"index\");\r",
+							"    pm.expect(`${responseBody.index}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"timestamp\");\r",
+							"    pm.expect(`${responseBody.timestamp}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"previousHash\");\r",
+							"    if (responseBody.index !== 0)\r",
+							"        pm.expect(responseBody.previousHash).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"data\");\r",
+							"    pm.expect(responseBody.data).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"hash\");\r",
+							"    pm.expect(responseBody.hash).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/blockchain/blocks/{{lastIndex}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blockchain",
+						"blocks",
+						"{{lastIndex}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find block by HASH",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful GET find block by HASH\", function () {\r",
+							"    let response = pm.response;\r",
+							"    pm.expect(response.code).to.equal(200);\r",
+							"    pm.expect(response.text()).to.not.be.empty;\r",
+							"\r",
+							"    let responseBody = response.json();\r",
+							"    pm.expect(responseBody).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"index\");\r",
+							"    pm.expect(`${responseBody.index}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"timestamp\");\r",
+							"    pm.expect(`${responseBody.timestamp}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"previousHash\");\r",
+							"    if (responseBody.index !== 0)\r",
+							"        pm.expect(responseBody.previousHash).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"data\");\r",
+							"    pm.expect(responseBody.data).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"hash\");\r",
+							"    pm.expect(responseBody.hash).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/blockchain/blocks/{{lastHash}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blockchain",
+						"blocks",
+						"{{lastHash}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Block",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST add block\", function () {\r",
+							"    let response = pm.response;\r",
+							"    pm.expect(response.code).to.equal(201);\r",
+							"    pm.expect(response.text()).to.not.be.empty;\r",
+							"\r",
+							"    let responseBody = response.json();\r",
+							"    pm.expect(responseBody).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"index\");\r",
+							"    pm.expect(`${responseBody.index}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"timestamp\");\r",
+							"    pm.expect(`${responseBody.timestamp}`).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"previousHash\");\r",
+							"    if (responseBody.index !== 0)\r",
+							"        pm.expect(responseBody.previousHash).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"data\");\r",
+							"    pm.expect(responseBody.data).to.not.be.empty;\r",
+							"    pm.expect(responseBody).to.have.property(\"hash\");\r",
+							"    pm.expect(responseBody.hash).to.not.be.empty;\r",
+							"\r",
+							"    pm.environment.set(\"lastIndex\", responseBody.index);\r",
+							"    pm.environment.set(\"nextIndex\", responseBody.index + 1);\r",
+							"    pm.environment.set(\"lastHash\", responseBody.hash);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"index\": {{nextIndex}},\r\n    \"previousHash\": \"{{lastHash}}\",\r\n    \"data\": \"teste {{nextIndex}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/blockchain/blocks",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blockchain",
+						"blocks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all blocks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful GET find all blocks\", function () {\r",
+							"    let response = pm.response;\r",
+							"    pm.expect(response.code).to.equal(200);\r",
+							"    pm.expect(response.text()).to.not.be.empty;\r",
+							"\r",
+							"    let responseBody = response.json();\r",
+							"    pm.expect(responseBody).to.not.be.empty;\r",
+							"\r",
+							"    responseBody.forEach(block => {\r",
+							"        pm.expect(block).to.have.property(\"index\");\r",
+							"        pm.expect(`${block.index}`).to.not.be.empty;\r",
+							"        pm.expect(block).to.have.property(\"timestamp\");\r",
+							"        pm.expect(`${block.timestamp}`).to.not.be.empty;\r",
+							"        pm.expect(block).to.have.property(\"previousHash\");\r",
+							"        if (block.index !== 0)\r",
+							"            pm.expect(block.previousHash).to.not.be.empty;\r",
+							"        pm.expect(block).to.have.property(\"data\");\r",
+							"        pm.expect(block.data).to.not.be.empty;\r",
+							"        pm.expect(block).to.have.property(\"hash\");\r",
+							"        pm.expect(block.hash).to.not.be.empty;\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/blockchain/blocks",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"blockchain",
+						"blocks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

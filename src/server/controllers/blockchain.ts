@@ -14,6 +14,10 @@ router.get("/status", (req, res, next) => {
     )
 });
 
+router.get("/blocks", (req, res, next) => {
+    res.json(blockchain.blocks);
+});
+
 router.get("/blocks/:indexOrHash", (req, res, next) => {
     let block;
     
@@ -33,8 +37,6 @@ router.get("/blocks/:indexOrHash", (req, res, next) => {
 });
 
 router.post("/blocks", (req, res, next) => {
-    if(req.body.hash === undefined) return res.status(422).send("Invalid hash");
-
     const block = new Block(req.body as Block);
     const validation = blockchain.addBlock(block);
 
@@ -46,4 +48,4 @@ router.post("/blocks", (req, res, next) => {
     }
 });
 
-module.exports = (app: any) => app.use('/blockchain', router)
+module.exports = (app: any) => app.use('/blockchain', router);

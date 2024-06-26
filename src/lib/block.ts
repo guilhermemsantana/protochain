@@ -21,7 +21,7 @@ export default class Block {
         this.previousHash = block?.previousHash || "";
         this.data = block?.data || "";
         this.hash = block?.hash || this.getHash();
-    }
+    };
 
     /**
      * Generates block hash
@@ -29,7 +29,7 @@ export default class Block {
      */
     getHash(): string {
         return sha256(this.index + this.timestamp + this.previousHash + this.data).toString();
-    }
+    };
 
     /**
      * Validates the block
@@ -43,5 +43,5 @@ export default class Block {
         if (!this.data) return new Validation(false, "Invalid data");
 
         return new Validation();
-    }
+    };
 }

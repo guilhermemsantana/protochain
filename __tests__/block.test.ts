@@ -12,7 +12,7 @@ describe("Block tests", () => {
                 data: "Genesis Block"
             } as Block
         );
-    })
+    });
 
     test("Should be valid", () => {
         const block = new Block(
@@ -24,7 +24,7 @@ describe("Block tests", () => {
         );
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeTruthy();
-    })
+    });
 
     test("Should be valid {fallbacks}", () => {
         const block = new Block();
@@ -32,7 +32,7 @@ describe("Block tests", () => {
         block.hash = block.getHash();
         const validation = block.isValid(-1, "");
         expect(validation.success).toBeTruthy();
-    })
+    });
 
     test("Should NOT be valid {index}", () => {
         const block: Block = new Block(
@@ -44,7 +44,7 @@ describe("Block tests", () => {
         );
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
     test("Should NOT be valid {timestamp}", () => {
         const block: Block = new Block(
@@ -58,7 +58,7 @@ describe("Block tests", () => {
         block.hash = block.getHash();
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
     test("Should NOT be valid {previous hash}", () => {
         const block: Block = new Block(
@@ -70,7 +70,7 @@ describe("Block tests", () => {
         );
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
     test("Should NOT be valid {hash}", () => {
         const block: Block = new Block(
@@ -83,7 +83,7 @@ describe("Block tests", () => {
         block.hash = "";
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
     test("Should NOT be valid {data}", () => {
         const block: Block = new Block(
@@ -95,12 +95,12 @@ describe("Block tests", () => {
         );
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
     test("Should NOT be valid {fallbacks}", () => {
         const block = new Block();
         const validation = block.isValid(genesis.index, genesis.hash);
         expect(validation.success).toBeFalsy();
-    })
+    });
 
-})
+});

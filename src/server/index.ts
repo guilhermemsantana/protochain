@@ -10,8 +10,8 @@ app.use(express.json());
 
 export const blockchain = new Blockchain();
 
-require('./controllers')(app)
+require('./controllers')(app);
 
 app.listen(PORT, () => {
     console.log(`Blockchain server is running at port ${PORT}`);
-})
+});

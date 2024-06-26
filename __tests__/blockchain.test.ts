@@ -8,7 +8,7 @@ describe("Blockchain tests", () => {
     test("Should has genesis block", () => {
         const blockchain: Blockchain = new Blockchain();
         expect(blockchain.blocks.length).toEqual(1);
-    })
+    });
 
     test("Should add block", () => {
         const blockchain: Blockchain = new Blockchain();
@@ -23,7 +23,7 @@ describe("Blockchain tests", () => {
         );
 
         expect(result.success).toEqual(true);
-    })
+    });
 
     test("Should NOT add block", () => {
         const blockchain: Blockchain = new Blockchain();
@@ -37,7 +37,7 @@ describe("Blockchain tests", () => {
         const result = blockchain.addBlock(block);
 
         expect(result.success).toEqual(false);
-    })
+    });
 
     test("Should get block", () => {
         const blockchain: Blockchain = new Blockchain();
@@ -52,12 +52,12 @@ describe("Blockchain tests", () => {
         const result = blockchain.getBlock(block.hash);
 
         expect(result).toBeTruthy();
-    })
+    });
 
     test("Should be valid {genesis}", () => {
         const blockchain: Blockchain = new Blockchain();
         expect(blockchain.isValid().success).toEqual(true);
-    })
+    });
 
     test("Should be valid {two blocks}", () => {
         const blockchain: Blockchain = new Blockchain();
@@ -72,7 +72,7 @@ describe("Blockchain tests", () => {
         );
 
         expect(blockchain.isValid().success).toEqual(true);
-    })
+    });
 
     test("Should NOT be valid", () => {
         const blockchain: Blockchain = new Blockchain();
@@ -88,6 +88,6 @@ describe("Blockchain tests", () => {
         blockchain.blocks[1].index = -1;
 
         expect(blockchain.isValid().success).toEqual(false);
-    })
+    });
 
-})
+});
