@@ -44,4 +44,4 @@ export default class Block {
 
         return new Validation();
     };
-}
+};

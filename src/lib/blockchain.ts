@@ -50,8 +50,8 @@ export default class Blockchain {
         return new Validation();
     };
 
-    getBlock(hash: string): Block | undefined {
-        return this.blocks.find(block => block.hash === hash);
+    getBlock(indexOrHash: string): Block | undefined {
+        return this.blocks.find(block => block.index === parseInt(indexOrHash) || block.hash === indexOrHash);
     };
 
     /**
@@ -71,4 +71,4 @@ export default class Blockchain {
 
         return new Validation();
     };
-}
+};

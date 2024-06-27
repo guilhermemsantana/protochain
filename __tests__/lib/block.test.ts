@@ -1,4 +1,4 @@
-import Block from "../src/lib/block";
+import Block from "../../src/lib/block";
 
 describe("Block tests", () => {
 

@@ -18,7 +18,7 @@ export default class Block {
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
-        this.data = block?.data || "";
+        this.data = block?.data || "Genesis Block";
         this.hash = block?.hash || this.getHash();
     };
 

@@ -14,4 +14,4 @@ export default class Validation {
         this.success = success;
         this.message = message;
     };
-}
+};
