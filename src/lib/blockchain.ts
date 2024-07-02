@@ -1,6 +1,6 @@
 import Block from "./block";
-import BlockInfo from "./interfaces/blockInfo";
 import Validation from "./validation";
+import { BlockInfo } from "./types/blockInfo";
 
 /**
  * Blockchain class

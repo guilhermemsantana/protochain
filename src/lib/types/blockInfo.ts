@@ -1,7 +1,7 @@
 /**
- * The interface with the information needed to mine a new block
+ * The type with the information needed to mine a new block
  */
-export default interface BlockInfo {
+export type BlockInfo = {
     index: number;
     previousHash: string;
     difficulty: number;

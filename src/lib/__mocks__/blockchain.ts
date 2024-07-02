@@ -1,6 +1,6 @@
 import Block from "./block";
 import Validation from "../validation";
-import BlockInfo from "../interfaces/blockInfo";
+import { BlockInfo } from "../types/blockInfo";
 
 /**
  * Mocked blockchain class
