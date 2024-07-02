@@ -8,7 +8,7 @@ app.use(express.json());
 
 if (process.argv.includes("--run")) {
     app.use(morgan("tiny"));
-}
+};
 
 export const blockchain = new Blockchain();
 
@@ -18,8 +18,8 @@ if (process.argv.includes("--run")) {
     app.listen(PORT, () => {
         console.log(`Blockchain server is running at port ${PORT}`);
     });
-}
+};
 
 export {
     app
-}
+};

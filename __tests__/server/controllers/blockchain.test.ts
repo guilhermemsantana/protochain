@@ -1,9 +1,9 @@
 import request from "supertest";
-import { app } from "../../src/server/index";
-import Block from "../../src/lib/block";
+import { app } from "../../../src/server/index";
+import Block from "../../../src/lib/block";
 
-jest.mock("../../src/lib/block");
-jest.mock("../../src/lib/blockchain");
+jest.mock("../../../src/lib/block");
+jest.mock("../../../src/lib/blockchain");
 
 describe("Blockchain Controller Tests", () => {
     test("Should GET blockchain status", async () => {
@@ -52,6 +52,13 @@ describe("Blockchain Controller Tests", () => {
         expect(response.body[0].timestamp).toBeTruthy;
         expect(response.body[0].timestamp).toBeGreaterThan(1);
         expect(response.body[0].timestamp).toBeLessThan(Date.now());
+    });
+
+    test("[GET] Should find the next block info", async () => {
+        const response = await request(app).get("/blockchain/blocks/next");
+        
+        expect(response.status).toEqual(200);
+        expect(response.body.index).toEqual(1);
     });
 
     test("[GET] Should not find block by id", async () => {

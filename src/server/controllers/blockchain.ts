@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import Block from "../../lib/block";
 import { blockchain } from "..";
 
 const router = express.Router();
 
-router.get("/status", (req, res, next) => {
+router.get("/status", (req: Request, res: Response, next: NextFunction) => {
     res.json(
         {
             numberOfBlocks: blockchain.blocks.length,
@@ -14,11 +14,15 @@ router.get("/status", (req, res, next) => {
     )
 });
 
-router.get("/blocks", (req, res, next) => {
+router.get("/blocks", (req: Request, res: Response, next: NextFunction) => {
     res.json(blockchain.blocks);
 });
 
-router.get("/blocks/:indexOrHash", (req, res, next) => {
+router.get("/blocks/next", (req: Request, res: Response, next: NextFunction) => {
+    res.json(blockchain.getNextBlock());
+});
+
+router.get("/blocks/:indexOrHash", (req: Request, res: Response, next: NextFunction) => {
     const block = blockchain.getBlock(req.params.indexOrHash);
 
     if (!block) {
@@ -28,7 +32,7 @@ router.get("/blocks/:indexOrHash", (req, res, next) => {
     return res.json(block);
 });
 
-router.post("/blocks", (req, res, next) => {
+router.post("/blocks", (req: Request, res: Response, next: NextFunction) => {
     if(req.body.hash === undefined) return res.sendStatus(422);
 
     const block = new Block(req.body as Block);

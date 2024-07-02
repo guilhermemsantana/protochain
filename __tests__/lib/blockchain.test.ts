@@ -90,4 +90,14 @@ describe("Blockchain tests", () => {
         expect(blockchain.isValid().success).toEqual(false);
     });
 
+    test("Should get next block info", () => {
+        const blockchain = new Blockchain();
+        const info = blockchain.getNextBlock();
+        expect(info.difficulty).toEqual(blockchain.getDifficulty());
+        expect(info.previousHash).toEqual(blockchain.getLastBlock().hash);
+        expect(info.index).toEqual(1);
+        expect(info.feePerTx).toEqual(blockchain.getFeePerTx());
+        expect(info.maxDifficulty).toEqual(Blockchain.MAX_DIFFICULTY);
+    });
+
 });

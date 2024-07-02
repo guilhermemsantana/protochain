@@ -1,7 +1,7 @@
 {
   "name": "protochain",
   "version": "1.0.0",
-  "description": "",
+  "description": "a basic blockchain prototype created for study purposes",
   "main": "./src/server/index.ts",
   "scripts": {
     "compile": "npx tsc",
