@@ -46,4 +46,4 @@ router.post("/blocks", (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-module.exports = (app: any) => app.use('/blockchain', router);
+module.exports = (app: any) => app.use("/blockchain", router);

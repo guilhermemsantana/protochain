@@ -1,7 +1,9 @@
 import Block from "../../src/lib/block";
 import Blockchain from "../../src/lib/blockchain";
+import Transaction from "../../src/lib/transaction";
 
 jest.mock("../../src/lib/block");
+jest.mock("../../src/lib/transaction");
 
 describe("Blockchain tests", () => {
 
@@ -17,7 +19,13 @@ describe("Blockchain tests", () => {
                 {
                     index: 1,
                     previousHash: blockchain.blocks[0].hash,
-                    data: "data"
+                    transactions: [
+                        new Transaction(
+                            {
+                                data: "Block 2"
+                            } as Transaction
+                        )
+                    ]
                 } as Block
             )
         );
@@ -31,7 +39,13 @@ describe("Blockchain tests", () => {
             {
                 index: -1,
                 previousHash: blockchain.blocks[0].hash,
-                data: "data"
+                transactions: [
+                    new Transaction(
+                        {
+                            data: "Block 2"
+                        } as Transaction
+                    )
+                ]
             } as Block
         );
         const result = blockchain.addBlock(block);
@@ -45,7 +59,13 @@ describe("Blockchain tests", () => {
             {
                 index: 1,
                 previousHash: blockchain.blocks[0].hash,
-                data: "data"
+                transactions: [
+                    new Transaction(
+                        {
+                            data: "Block 2"
+                        } as Transaction
+                    )
+                ]
             } as Block
         );
         blockchain.addBlock(block);
@@ -66,7 +86,13 @@ describe("Blockchain tests", () => {
                 {
                     index: 1,
                     previousHash: blockchain.blocks[0].hash,
-                    data: "data"
+                    transactions: [
+                        new Transaction(
+                            {
+                                data: "Block 2"
+                            } as Transaction
+                        )
+                    ]
                 } as Block
             )
         );
@@ -81,7 +107,13 @@ describe("Blockchain tests", () => {
                 {
                     index: 1,
                     previousHash: blockchain.blocks[0].hash,
-                    data: "data"
+                    transactions: [
+                        new Transaction(
+                            {
+                                data: "Block 2"
+                            } as Transaction
+                        )
+                    ]
                 } as Block
             )
         );

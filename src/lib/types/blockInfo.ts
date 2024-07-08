@@ -1,3 +1,5 @@
+import Transaction from "../transaction";
+
 /**
  * The type with the information needed to mine a new block
  */
@@ -7,5 +9,5 @@ export type BlockInfo = {
     difficulty: number;
     maxDifficulty: number;
     feePerTx: number;
-    data: string;
+    transactions: Transaction[];
 };

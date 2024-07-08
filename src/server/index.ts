@@ -11,19 +11,19 @@ app.use(express.json());
 /* c8 ignore start */
 if (process.argv.includes("--run")) {
     app.use(morgan("tiny"));
-};
+}
 /* c8 ignore end */
 
 export const blockchain = new Blockchain();
 
-require('./controllers')(app);
+require("./controllers")(app);
 
 /* c8 ignore start */
 if (process.argv.includes("--run")) {
     app.listen(PORT, () => {
         console.log(`Blockchain server is running at port ${PORT}`);
     });
-};
+}
 /* c8 ignore end */
 
 export {
