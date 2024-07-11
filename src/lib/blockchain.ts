@@ -3,20 +3,25 @@ import Validation from "./validation";
 import { BlockInfo } from "./types/blockInfo";
 import Transaction from "./transaction";
 import { TransactionType } from "./types/transactionType";
+import { TransactionSearch } from "./types/transactionSearch";
 
 /**
  * Blockchain class
  */
 export default class Blockchain {
     blocks: Block[];
+    mempool: Transaction[];
     nextIndex: number = 0;
+
     static readonly DIFFICULTY_FACTOR = 5;
     static readonly MAX_DIFFICULTY = 62;
+    static readonly TX_PER_BLOCK = 2;
 
     /**
      * Creates a new blockchain
      */
     constructor() {
+        this.mempool = [];
         this.blocks = [
             new Block(
                 {
@@ -44,6 +49,23 @@ export default class Blockchain {
         return this.blocks[this.blocks.length - 1];
     };
 
+    addTransaction(transaction: Transaction): Validation {
+        if (!transaction.isValid().success) {
+             return new Validation(false, `Invalid tx: ${transaction.isValid().message}`);
+        }
+
+        if (this.blocks.some(b => b.transactions.some(tx => tx.hash === transaction.hash))) {
+            return new Validation(false, `Duplicated tx in blockchain: ${transaction.hash}`);
+        }
+
+        if (this.mempool.some(tx => tx.hash === transaction.hash)) {
+            return new Validation(false, `Duplicated tx in mempool: ${transaction.hash}`)
+        }
+
+        this.mempool.push(transaction);
+        return new Validation(true, transaction.hash);
+    };
+
     /**
      * Adds a new block to the blockchain
      * @returns Returns true when successfully adding a block to the blockchain
@@ -56,10 +78,18 @@ export default class Blockchain {
             return new Validation(false, `Invalid block: ${validation.message}`);
         }
 
+        const txs = block.transactions.filter(tx => tx.type !== TransactionType.FEE).map(tx => tx.hash);
+        const newMempool = this.mempool.filter(tx => !txs.includes(tx.hash));
+
+        if (newMempool.length + txs.length !== this.mempool.length) {
+            return new Validation(false, "Invalid tx in block: mempool")
+        }
+        
+        this.mempool = newMempool;
         this.blocks.push(block);
         this.nextIndex++;
 
-        return new Validation();
+        return new Validation(true, block.hash);
     };
 
     /**
@@ -69,6 +99,29 @@ export default class Blockchain {
      */
     getBlock(indexOrHash: string): Block | undefined {
         return this.blocks.find(block => block.index === parseInt(indexOrHash) || block.hash === indexOrHash);
+    };
+
+    getTransaction(hash: string): TransactionSearch {
+        const mempoolIndex = this.mempool.findIndex(tx => tx.hash ===hash);
+        if (mempoolIndex !== -1) {
+            return {
+                mempoolIndex,
+                transaction: this.mempool[mempoolIndex]
+            } as TransactionSearch
+        }
+
+        const blockIndex = this.blocks.findIndex(b => b.transactions.some(tx => tx.hash === hash));
+        if (blockIndex !== -1) {
+            return {
+                blockIndex,
+                transaction: this.blocks[blockIndex].transactions.find(tx => tx.hash === hash)
+            } as TransactionSearch
+        }
+
+        return {
+            blockIndex: -1,
+            mempoolIndex: -1
+        } as TransactionSearch
     };
 
     /**
@@ -109,15 +162,15 @@ export default class Blockchain {
      * Gets the next block to be mined from the blockchain
      * @returns Returns the next block info
      */
-    getNextBlock(): BlockInfo {
+    getNextBlock(): BlockInfo | null{
+        if (!this.mempool || !this.mempool.length) {
+            return null;
+        }
+
+        const transactions = this.mempool.slice(0, Blockchain.TX_PER_BLOCK);
+
         return {
-            transactions: [
-                new Transaction(
-                    {
-                        data: Date.toString()
-                    } as Transaction
-                )
-            ], 
+            transactions, 
             difficulty: this.getDifficulty(),
             previousHash: this.getLastBlock().hash,
             index: this.blocks.length,

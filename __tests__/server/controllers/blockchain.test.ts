@@ -2,18 +2,22 @@ import request from "supertest";
 import { app } from "../../../src/server/index";
 import Block from "../../../src/lib/block";
 import { TransactionType } from "../../../src/lib/types/transactionType";
+import Transaction from "../../../src/lib/transaction";
 
 jest.mock("../../../src/lib/block");
 jest.mock("../../../src/lib/blockchain");
 jest.mock("../../../src/lib/transaction");
 
 describe("Blockchain Controller Tests", () => {
-    test("Should GET blockchain status", async () => {
+    test("[GET] Should get blockchain status", async () => {
         const response = await request(app).get("/blockchain/status");
         
         expect(response.status).toEqual(200);
         expect(response.body.isValid.success).toBeTruthy();
         expect(response.body.isValid.message).toBeFalsy();
+        expect(response.body.mempool).toEqual(1);
+        expect(response.body.blocks).toEqual(1);
+        expect(response.body.lastBlock.index).toEqual(0);
     });
 
     test("[GET] Should find genesis block by id", async () => {
@@ -129,5 +133,74 @@ describe("Blockchain Controller Tests", () => {
         expect(response.status).toEqual(400);
         expect(response.body.success).toBeFalsy();
         expect(response.body.message).toEqual("Invalid mock block.");
+    });
+
+    test("[GET] Should add transaction", async () => {
+        const tx = new Transaction(
+            {
+                data: "tx1",
+                hash: "xyz",
+                type: TransactionType.REGULAR
+            } as Transaction
+        );
+
+        const response = await request(app)
+            .post("/blockchain/transactions")
+            .send(tx);
+        
+        expect(response.status).toEqual(201);
+        expect(response.body.type).toEqual(TransactionType.REGULAR);
+        expect(response.body.timestamp).toBeGreaterThan(0);
+        expect(response.body.hash).toEqual("xyz");
+        expect(response.body.data).toEqual("tx1");
+    });
+
+    test("[GET] Should NOT add transaction (invalid data)", async () => {
+        const tx = new Transaction(
+            {
+                data: ""
+            } as Transaction
+        );
+
+        const response = await request(app)
+            .post("/blockchain/transactions")
+            .send(tx);
+        
+        expect(response.status).toEqual(400);
+        expect(response.body.success).toBeFalsy();
+        expect(response.body.message).toEqual("Invalid mock transaction.");
+    });
+
+    test("[GET] Should NOT add transaction (invalid hash)", async () => {
+        const response = await request(app)
+            .post("/blockchain/transactions")
+            .send({});
+        
+        expect(response.status).toEqual(422);
+    });
+
+    test("[GET] Should get transaction", async () => {
+        const response = await request(app)
+            .get("/blockchain/transactions");
+
+        expect(response.status).toEqual(200);
+        expect(response.body.next).toBeTruthy();
+        expect(response.body.next.length).toEqual(2);
+        expect(response.body.next[0].type).toEqual(1);
+        expect(response.body.next[0].timestamp).toBeGreaterThan(0);
+        expect(response.body.next[0].data).toEqual("");
+        expect(response.body.next[0].hash).toEqual("abc");
+        expect(response.body.next[1].type).toEqual(1);
+        expect(response.body.next[1].timestamp).toBeGreaterThan(0);
+        expect(response.body.next[1].data).toEqual("tx1");
+        expect(response.body.next[1].hash).toEqual("xyz");
+    });
+
+    test("[GET] Should get transaction (hash)", async () => {
+        const response = await request(app)
+            .get("/blockchain/transactions/xyz");
+
+        expect(response.status).toEqual(200);
+        expect(response.body.mempoolIndex).toEqual(0);
     });
 });

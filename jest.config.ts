@@ -34,7 +34,8 @@ const config: Config = {
   coveragePathIgnorePatterns: [
     "\\\\node_modules\\\\",
     "/src/lib/types/blockInfo.ts",
-    "/src/lib/types/transactionType.ts"
+    "/src/lib/types/transactionType.ts",
+    "/src/lib/types/transactionSearch.ts"
   ],
 
   // Indicates which provider should be used to instrument code for coverage
