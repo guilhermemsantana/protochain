@@ -8,7 +8,8 @@
     "start": "node -r dotenv/config ./dist/server/index.js",
     "test": "jest",
     "dev": "nodemon -r dotenv/config ./src/server/index.ts --run",
-    "miner": "ts-node -r dotenv/config ./src/client/miner.ts"
+    "miner": "ts-node -r dotenv/config ./src/client/miner.ts",
+    "wallet": "ts-node ./src/client/wallet.ts"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +32,9 @@
     "axios": "^1.7.2",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
+    "ecpair": "^2.1.0",
     "express": "^4.19.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "tiny-secp256k1": "^2.2.3"
   }
 }
